@@ -41,57 +41,40 @@ class FormularioController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all()); // Para depuración
+
         // Validar la tabla seleccionada y el identificador
         $validated = $request->validate([
-            'table' => 'required|in:administrador,Proveedor,solicitante,Despachador',
-            // 'id_persona' => 'required|integer',
+            'table' => 'required|in:proveedor,despachador',
         ]);
 
-        // $data = [
-        //     'id_persona' => $validated['identificador'],
-        // ];
         switch ($validated['table']) {
-            case 'Proveedor':
+            case 'proveedor':
                 // Validar los datos del proveedor
                 $validatedData = $request->validate([
                     'id_persona' => 'required|integer',
                     'nit' => 'required|integer',
                     'direccion' => 'required|string|max:255',
                 ]);
-                // $data['id_persona'] = $request->input('id_persona');
-                // $data['nit'] = $request->input('nit');
-                // $data['direccion'] = $request->input('direccion');´
                 Proveedor::create($validatedData);
                 break;
 
             case 'despachador':
                 // Validar los datos del despachador
-                $request->validate([
+                $validatedData = $request->validate([
                     'turno' => 'required|string|max:255',
                     'zona_asignada' => 'required|string|max:255',
                     'fecha_contratacion' => 'required|date',
                     'estado_despachador' => 'required|string|max:255',
                     'contacto' => 'required|string|max:255',
                 ]);
-                $data['turno'] = $request->input('turno');
-                $data['zona_asignada'] = $request->input('zona_asignada');
-                $data['fecha_contratacion'] = $request->input('fecha_contratacion');
-                $data['estado_despachador'] = $request->input('estado_despachador');
-                $data['contacto'] = $request->input('contacto');
-                break;
-
-            default:
-                // Manejar caso por defecto si es necesario
+                Despachador::create($validatedData);
                 break;
         }
 
-        // Insertar solo los campos relevantes
-        // DB::table($validated['table'])->insert($data);
-        
-
         return redirect()->back()->with('success', 'Registro creado exitosamente en la tabla ' . $validated['table']);
     }
+
 
 
 
