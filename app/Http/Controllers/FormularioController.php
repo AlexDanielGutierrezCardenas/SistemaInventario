@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 use App\Models\Proveedor;
+use App\Models\Cliente;
+
 
 class FormularioController extends Controller
 {
@@ -39,7 +41,7 @@ class FormularioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // dd($request->all()); // Para depuración
 
@@ -56,7 +58,15 @@ class FormularioController extends Controller
                     'nit' => 'required|integer',
                     'direccion' => 'required|string|max:255',
                 ]);
-                Proveedor::create($validatedData);
+                 // Crear el proveedor
+                $proveedor = Proveedor::create($validatedData);
+
+                // Obtener el id del proveedor (usar 'id' si no has personalizado la llave primaria)
+                $id_proveedor = $proveedor->id_proveedor;  // Cambia a 'id_proveedor' solo si has cambiado la llave primaria en el modelo
+
+                // Redirigir al formulario de creación con el id del proveedor
+                return redirect()->route('clientes.index', ['id_proveedor' => $proveedor->$id_proveedor]);
+                // return redirect()->route('formulario.create', ['id_persona' => $persona->id_persona]);
                 break;
 
             case 'despachador':

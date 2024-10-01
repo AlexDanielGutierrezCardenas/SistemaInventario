@@ -11,7 +11,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use App\Models\Proveedor;
-use App\Models\Empleado;
+
 
 class ClienteController extends Controller
 {
@@ -26,21 +26,35 @@ class ClienteController extends Controller
     public function index()
     {
         $clientes = Cliente::all();
-        $personas = Persona::pluck('nombre', 'id_persona'); 
+        
         //$proveedors = \App\Models\Proveedor::all();
         //$personas = \App\Models\Persona::all()->keyBy('id'); // Organiza personas por ID para búsqueda rápida
-        return view('clientes.index', compact('clientes','personas'));
+        return view('clientes.index', compact('clientes'));
+
+
+
+        // Verificar si la persona existe
+        
+
+        // Retornar la vista con la persona
+        
         //return response()->json($proveedors);
     }
 
-    public function create(): View
+    public function create(Request $request)
     {
         $personas = Persona::pluck('nombre', 'id_persona'); 
-        $proveedors = Proveedor::all();
-        $clientes = Cliente::all();
-        $empleados = Empleado::all();
-        $users= User::all();
-        return view('clientes.create', compact('personas','proveedors','clientes','empleados','users'));
+        $id_proveedor = $request->query('id_proveedor');
+        $proveedor = Proveedor::find($id_proveedor);
+        $personas = Persona::pluck('nombre', 'id_persona'); 
+        if (!$proveedor) {
+            return redirect()->back()->withErrors('Persona no encontrada');
+        }
+        // $proveedors = Proveedor::all();
+        // $clientes = Cliente::all();
+        // $empleados = Empleado::all();
+        // $users= User::all();
+        return view('clientes.create', compact('personas','id_proveedor'));
     }
     public function edit($id_persona)
     {

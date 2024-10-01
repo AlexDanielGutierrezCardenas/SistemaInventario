@@ -17,6 +17,7 @@
         <!-- Formulario para crear un usuario -->
         <form action="{{ route('cliente.store') }}" method="POST">
             @csrf  <!-- Protección CSRF -->
+            
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="id_persona" class="form-label">Persona:</label>
@@ -37,8 +38,8 @@
                         </option>
                     @endforeach
                     </select> --}}
-                    <select name="id_persona" id="id_persona" class="form-control">
-                        <option value="">Seleccione una persona</option>
+                    {{-- <select name="id_persona" id="id_persona" class="form-control">
+                        <option value="">Seleccione una persona</option> --}}
                         {{-- @foreach($personas as $id_persona => $nombre)
                         @php            
                             $usuarioExists = $users->contains('persona_id', $id_persona);
@@ -66,7 +67,7 @@
                             {{ !$personaAsignada ? '(Disponible)' : '' }}
                         </option>
                         @endforeach --}}´
-                        @foreach($personas as $id_persona => $nombre)
+                        {{-- @foreach($personas as $id_persona => $nombre)
                         @php
                             // Verificamos si la persona está en cada tabla
                             $usuarioExists = $users->contains('persona_id', $id_persona);
@@ -91,7 +92,7 @@
                             {{ $usuarioExists && !$clienteExists && !$proveedorExists && !$empleadoExists && !$usuarioConId1 ? '(Disponible)' : '' }}
                         </option>
                     @endforeach
-                    </select>
+                    </select> --}}
                 </div>
             </div>
             <div class="mb-3">
